@@ -52,7 +52,7 @@ options:
 substitutions:
   _CONCURRENCY: "10"
   _CPU: "1"
-  _IMAGE: ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPOSITORY}/${_SERVICE_NAME}
+  _IMAGE: ${_SERVICE_NAME}
   _MAX_INSTANCES: "5"
   _MEMORY: "256"
   _TIMEOUT: "300"
