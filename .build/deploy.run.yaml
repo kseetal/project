@@ -58,3 +58,4 @@ substitutions:
   _TIMEOUT: "300"
   _REGION: "eu-west1"
   _SERVICE_NAME: "camera-app"
+  _ARTIFACT_REPOSITORY: "camera-artifact"
