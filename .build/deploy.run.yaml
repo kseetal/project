@@ -1,14 +1,4 @@
 steps:
-    # Get tag name. Extract tag text after / and replace . with -
-  - name: gcr.io/cloud-builders/gcloud
-    id: Extract version from Github tag
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        VERSION=${TAG_NAME}
-        echo ${VERSION//./-} | cut -d'/' -f 2 > /workspace/_VERSION
-
     # Build container image
   - name: docker
     id: Build container image
@@ -17,7 +7,6 @@ steps:
       - -c
       - |
         docker build \
-        -f .cloudbuild/Dockerfile \
         -t ${_SERVICE_NAME}:latest .
 
     # Tag image and push the container image to the Artifact Registry
@@ -48,16 +37,11 @@ steps:
         --region=${_REGION} \
         --platform=managed \
         --no-traffic \
-        --service-account=${_SERVICE_ACCOUNT} \
-        --min-instances=0 \
         --max-instances=${_MAX_INSTANCES} \
         --cpu=${_CPU} \
         --memory=${_MEMORY}Mi \
-        --ingress=${_INGRESS} \
         --timeout=${_TIMEOUT} \
-        --concurrency=${_CONCURRENCY} \
-        --env-vars-file=${_ENV_VARS_FILE} \
-        --labels=billing=gcr-${_SERVICE_NAME},billing-allocation=${_BILLING_ALLOCATION}
+        --concurrency=${_CONCURRENCY} 
 
 timeout: 600s
 images:
@@ -69,15 +53,17 @@ substitutions:
   _CONCURRENCY: "10"
   _CPU: "1"
   _IMAGE: ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPOSITORY}/${_SERVICE_NAME}
-  _INGRESS: "internal"
-  _MAX_INSTANCES: "10"
-  _MEMORY: "512"
+  _MAX_INSTANCES: "5"
+  _MEMORY: "256"
   _TIMEOUT: "300"
+  _REGION: "eu-west1"
 
   # terraformed
   _ARTIFACT_REPOSITORY:
   _BILLING_ALLOCATION:
   _ENV_VARS_FILE:
-  _REGION:
+  _SECRET_VOLUME:
   _SERVICE_ACCOUNT:
   _SERVICE_NAME:
+  _SQL_INSTANCE:
+  _VPC_CONNECTOR:
