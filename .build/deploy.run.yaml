@@ -7,7 +7,7 @@ steps:
       - -c
       - |
         docker build \
-        -t ${_SERVICE_NAME}:latest .
+        -t ${_IMAGE}:latest .
 
     # Tag image and push the container image to the Artifact Registry
   - name: docker
