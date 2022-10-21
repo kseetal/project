@@ -10,6 +10,8 @@ FROM python:3.10-slim
 # Copy local code to the container image.
 ENV APP_HOME ./app
 WORKDIR $APP_HOME
+
+RUN ls
 COPY ./project/main.py ./
 
 # Make port 8080 available to the world outside this container
