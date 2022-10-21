@@ -20,7 +20,6 @@ steps:
       - |
         echo latest
         docker tag ${_SERVICE_NAME} ${_IMAGE}:latest
-        docker tag ${_SERVICE_NAME} ${_IMAGE}:$(cat /workspace/_VERSION)
         docker push --all-tags ${_IMAGE}
 
     # Deploy container image to Cloud Run
@@ -50,7 +49,7 @@ options:
 substitutions:
   _CONCURRENCY: "10"
   _CPU: "1"
-  _IMAGE: ${_SERVICE_NAME}
+  _IMAGE: "cameraapp"
   _MAX_INSTANCES: "5"
   _MEMORY: "256"
   _TIMEOUT: "300"
