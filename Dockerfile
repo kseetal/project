@@ -12,7 +12,7 @@ ENV APP_HOME ./app
 WORKDIR $APP_HOME
 
 RUN ls
-COPY ./project/main.py ./
+COPY * /
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
