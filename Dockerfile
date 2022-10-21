@@ -3,9 +3,9 @@
 FROM python:3.10-slim
 
 # # Install pip requirements
-# COPY requirements.txt /tmp/pip-tmp/
-# RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
-#     && rm -rf /tmp/pip-tmp
+COPY requirements.txt /tmp/pip-tmp/
+RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
+    && rm -rf /tmp/pip-tmp
 
 # Copy local code to the container image.
 ENV APP_HOME ./app
