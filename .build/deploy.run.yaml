@@ -1,0 +1,83 @@
+steps:
+    # Get tag name. Extract tag text after / and replace . with -
+  - name: gcr.io/cloud-builders/gcloud
+    id: Extract version from Github tag
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        VERSION=${TAG_NAME}
+        echo ${VERSION//./-} | cut -d'/' -f 2 > /workspace/_VERSION
+
+    # Build container image
+  - name: docker
+    id: Build container image
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        docker build \
+        -f .cloudbuild/Dockerfile \
+        -t ${_SERVICE_NAME}:latest .
+
+    # Tag image and push the container image to the Artifact Registry
+  - name: docker
+    waitFor:
+      - Build container image
+    id: Tag image and push
+    entrypoint: sh
+    args:
+      - -c
+      - |
+        echo latest
+        docker tag ${_SERVICE_NAME} ${_IMAGE}:latest
+        cat /workspace/_VERSION
+        docker tag ${_SERVICE_NAME} ${_IMAGE}:$(cat /workspace/_VERSION)
+        docker push --all-tags ${_IMAGE}
+
+    # Deploy container image to Cloud Run
+  - name: gcr.io/cloud-builders/gcloud
+    id: Deploy to Cloud Run
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gcloud run deploy ${_SERVICE_NAME} \
+        --image=${_IMAGE}:$(cat /workspace/_VERSION) \
+        --revision-suffix=$(cat /workspace/_VERSION) \
+        --region=${_REGION} \
+        --platform=managed \
+        --no-traffic \
+        --service-account=${_SERVICE_ACCOUNT} \
+        --min-instances=0 \
+        --max-instances=${_MAX_INSTANCES} \
+        --cpu=${_CPU} \
+        --memory=${_MEMORY}Mi \
+        --ingress=${_INGRESS} \
+        --timeout=${_TIMEOUT} \
+        --concurrency=${_CONCURRENCY} \
+        --env-vars-file=${_ENV_VARS_FILE} \
+        --labels=billing=gcr-${_SERVICE_NAME},billing-allocation=${_BILLING_ALLOCATION}
+
+timeout: 600s
+images:
+  - ${_IMAGE}:latest
+
+options:
+  dynamic_substitutions: true # Allow creation of substitution with another substitution
+substitutions:
+  _CONCURRENCY: "10"
+  _CPU: "1"
+  _IMAGE: ${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_ARTIFACT_REPOSITORY}/${_SERVICE_NAME}
+  _INGRESS: "internal"
+  _MAX_INSTANCES: "10"
+  _MEMORY: "512"
+  _TIMEOUT: "300"
+
+  # terraformed
+  _ARTIFACT_REPOSITORY:
+  _BILLING_ALLOCATION:
+  _ENV_VARS_FILE:
+  _REGION:
+  _SERVICE_ACCOUNT:
+  _SERVICE_NAME:
