@@ -30,8 +30,8 @@ steps:
       - -c
       - |
         gcloud run deploy ${_SERVICE_NAME} \
-        --image=${_IMAGE}:$(cat /workspace/_VERSION) \
-        --revision-suffix=$(cat /workspace/_VERSION) \
+        --image=${_IMAGE}:latest \
+        --revision-suffix=latest \
         --region=${_REGION} \
         --platform=managed \
         --max-instances=${_MAX_INSTANCES} \
