@@ -1,6 +1,6 @@
 # Use the official lightweight Python image.
 # https://hub.docker.com/_/python
-FROM python:3.10-slim
+FROM python:3.9-slim
 
 # # Install pip requirements
 COPY requirements.txt /tmp/pip-tmp/
@@ -11,8 +11,7 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requ
 ENV APP_HOME ./app
 WORKDIR $APP_HOME
 
-RUN ls
-COPY * /
+COPY ./ ./
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
