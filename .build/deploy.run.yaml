@@ -45,7 +45,7 @@ images:
   - ${_IMAGE}:latest
 
 options:
-  dynamic_substitutions: true # Allow creation of substitution with another substitution
+  dynamic_substitutions: true
 substitutions:
   _CONCURRENCY: "10"
   _CPU: "1"
