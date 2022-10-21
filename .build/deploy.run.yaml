@@ -49,7 +49,7 @@ options:
 substitutions:
   _CONCURRENCY: "10"
   _CPU: "1"
-  _IMAGE: "cameraapp"
+  _IMAGE: "gcr.io/flowing-subset-365919/github.com/kseetal/project"
   _MAX_INSTANCES: "5"
   _MEMORY: "256"
   _TIMEOUT: "300"
