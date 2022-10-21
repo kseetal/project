@@ -57,13 +57,4 @@ substitutions:
   _MEMORY: "256"
   _TIMEOUT: "300"
   _REGION: "eu-west1"
-
-  # terraformed
-  _ARTIFACT_REPOSITORY:
-  _BILLING_ALLOCATION:
-  _ENV_VARS_FILE:
-  _SECRET_VOLUME:
-  _SERVICE_ACCOUNT:
-  _SERVICE_NAME:
-  _SQL_INSTANCE:
-  _VPC_CONNECTOR:
+  _SERVICE_NAME: "camera-app"
