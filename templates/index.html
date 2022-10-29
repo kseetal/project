@@ -1,0 +1,32 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<head><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<html>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8  offset-lg-2">
+
+
+            <h2 class="mt-5">CAMERA APP</h2>
+			<form method="post" action="{{ url_for('tasks') }}">
+			<input type="submit" class="btn btn-primary" value="Stop/Start" name="stop"/>
+			<input type="submit" class="btn btn-info" value="Capture" name="click"/>
+                <input type="submit" class="btn btn-success" value="Upload" name="upload"/>
+			</form>
+        </div>
+        <img src="{{ url_for('video_feed') }}" class="col-sm-4 ">
+        <div>
+            <img src="{{ url_for('captured') }}" class="col-sm-4" alt="Captured">
+        </div>
+    </div>
+</div>
+</body>
+</html>
