@@ -10,6 +10,8 @@ capture = 0
 switch = 1
 rec = 0
 
+app = flask.Flask(__name__)
+
 try:
     os.mkdir('./captures')
 except OSError as error:
@@ -107,10 +109,6 @@ def tasks():
     elif request.method == 'GET':
         return render_template('index.html')
     return render_template('index.html')
-
-
-if __name__ == '__main__':
-    app.run()
 
 camera.release()
 cv2.destroyAllWindows()
