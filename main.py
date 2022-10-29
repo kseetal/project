@@ -10,8 +10,6 @@ capture = 0
 switch = 1
 rec = 0
 
-app = flask.Flask(__name__)
-
 try:
     os.mkdir('./captures')
 except OSError as error:
