@@ -1,11 +1,9 @@
 # Use the official lightweight Python image.
 # https://hub.docker.com/_/python
-FROM python:3.9-slim
+FROM python:3.9-bullseye
 
 # # Install pip requirements
-COPY requirements.txt /tmp/pip-tmp/
-RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
-    && rm -rf /tmp/pip-tmp
+RUN pip3 --disable-pip-version-check --no-cache-dir install -r requirements.txt
 
 # Copy local code to the container image.
 ENV APP_HOME ./app
