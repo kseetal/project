@@ -12,6 +12,9 @@ WORKDIR $APP_HOME
 
 COPY ./ ./
 
+RUN apt-get update
+RUN apt-get install ffmpeg libsm6 libxext6  -y
+
 RUN pip3 install Flask
 RUN pip3 install gunicorn
 RUN pip3 install opencv-python
