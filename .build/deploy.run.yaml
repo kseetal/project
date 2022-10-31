@@ -23,22 +23,22 @@ steps:
         docker push --all-tags ${_IMAGE}
 
     # Deploy container image to Cloud Run
-  - name: gcr.io/cloud-builders/gcloud
-    id: Deploy to Cloud Run
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        gcloud run deploy ${_SERVICE_NAME} \
-        --image=${_IMAGE}:latest \
-        --revision-suffix=latest \
-        --region=${_REGION} \
-        --platform=managed \
-        --max-instances=${_MAX_INSTANCES} \
-        --cpu=${_CPU} \
-        --memory=${_MEMORY}Mi \
-        --timeout=${_TIMEOUT} \
-        --concurrency=${_CONCURRENCY} 
+  # - name: gcr.io/cloud-builders/gcloud
+  #   id: Deploy to Cloud Run
+  #   entrypoint: bash
+  #   args:
+  #     - -c
+  #     - |
+  #       gcloud run deploy ${_SERVICE_NAME} \
+  #       --image=${_IMAGE}:latest \
+  #       --revision-suffix=latest \
+  #       --region=${_REGION} \
+  #       --platform=managed \
+  #       --max-instances=${_MAX_INSTANCES} \
+  #       --cpu=${_CPU} \
+  #       --memory=${_MEMORY}Mi \
+  #       --timeout=${_TIMEOUT} \
+  #       --concurrency=${_CONCURRENCY} 
 
 timeout: 600s
 images:
