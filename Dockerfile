@@ -3,8 +3,12 @@
 FROM python:3.9-bullseye
 
 # # Install pip requirements
-COPY requirements.txt ./
-RUN pip3 --disable-pip-version-check --no-cache-dir install -r ./requirements.txt
+# COPY requirements.txt ./
+# RUN pip3 install -r ./requirements.txt
+
+RUN pip3 install Flask
+RUN pip3 install gunicorn
+RUN pip3 install opencv-python
 
 # Copy local code to the container image.
 ENV APP_HOME ./app
