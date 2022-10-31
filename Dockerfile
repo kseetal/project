@@ -3,7 +3,8 @@
 FROM python:3.9-bullseye
 
 # # Install pip requirements
-RUN pip3 --disable-pip-version-check --no-cache-dir install -r requirements.txt
+COPY requirement.txt ./
+RUN pip3 --disable-pip-version-check --no-cache-dir install -r ./requirements.txt
 
 # Copy local code to the container image.
 ENV APP_HOME ./app
