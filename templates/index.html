@@ -7,26 +7,92 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<head><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<head><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="#"></head>
 <html>
-<body>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8  offset-lg-2">
+    <body>
+        <script>
+            function openCam() {
+             let All_mediaDevices=navigator.mediaDevices
+             if (!All_mediaDevices || !All_mediaDevices.getUserMedia) {
+                console.log("getUserMedia() not supported.");
+                return;
+             }
+             All_mediaDevices.getUserMedia({
+                audio: false,
+                video: true
+             })
+             .then(function(vidStream) {
+                var video = document.getElementById('videoInput');
+                if ("srcObject" in video) {
+                   video.srcObject = vidStream;
+                } else {
+                   video.src = window.URL.createObjectURL(vidStream);
+                }
+                video.onloadedmetadata = function(e) {
+                   video.play();
+                };
+             })
+             .catch(function(e) {
+                console.log(e.name + ": " + e.message);
+             });
+          }
+
+          function takePicture() {
+            canvas = document.getElementById("canvas");
+            capture = document.getElementById("capture");
+            video = document.getElementById('videoInput');
+            const context = canvas.getContext("2d");
+            canvas.setAttribute("width", video.videoWidth);
+            canvas.setAttribute("height", video.videoHeight)
+            context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+
+              const data = canvas.toDataURL("image/png");
+              capture.setAttribute("src", data);
+          }
 
 
-            <h2 class="mt-5">CAMERA APP</h2>
-			<form method="post" action="{{ url_for('tasks') }}">
-			<input type="submit" class="btn btn-primary" value="Stop/Start" name="stop"/>
-			<input type="submit" class="btn btn-info" value="Capture" name="click"/>
-                <input type="submit" class="btn btn-success" value="Upload" name="upload"/>
-			</form>
+         function upload() {
+            const file = $("#capture").attr('src');
+            var imageStr = file.substring(file.indexOf(",") + 1);
+            let formData = new FormData();
+            formData.append('image', imageStr);
+            $.ajax({
+                url: "/captured",
+                type:"POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                error: function(data){
+                    console.log("upload error", data);
+                    console.log(data.getAllResponseHeaders());
+                },
+                success: function(data){
+                    $("#capture").attr('src', data)
+                }
+            });
+		   }
+        </script>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm mx-auto">
+                    <h2 class="mt-5">SNIPPIT</h2>
+                    <form method="post" action="{{ url_for('index') }}">
+                        <input type="button" class="btn btn-primary" value="Start" onclick="openCam()"/>
+                        <input type="button" class="btn btn-info" value="Capture" onclick="takePicture()"/>
+                        <input type="button" class="btn btn-success" value="Segment" onclick="upload()"/>
+                    </form>
+                </div>
+                <div class="mx-auto col-sm p-2">
+                    <video id="videoInput"></video>
+                </div>
+                <br />
+                <canvas hidden id="canvas" class="d-none"> </canvas>
+                <div class="mx-auto col-sm p-2">
+                    <img id="capture" alt="Snapshot will appear here">
+                </div>
+                <br />
+            </div>
         </div>
-        <img src="{{ url_for('video_feed') }}" class="col-sm-4 ">
-        <div>
-            <img src="{{ url_for('captured') }}" class="col-sm-4" alt="Captured">
-        </div>
-    </div>
-</div>
-</body>
+    </body>
 </html>
