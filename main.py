@@ -4,7 +4,7 @@ import os, shutil
 import numpy as np
 from models.functions import get_image_array, visualize_segmentation, class_colors
 from pathlib import Path
-from flask import Flask, render_template, request, send_file, jsonify
+from flask import Flask, render_template, request
 from project.fcn8 import fcn_8
 from PIL import Image
 import cv2
