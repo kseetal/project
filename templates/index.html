@@ -75,7 +75,7 @@
         </script>
         <div class="container">
             <div class="row">
-                <div class="col-sm mx-auto">
+                <div class="col-sm mx-auto d-flex text-center">
                     <h2 class="mt-5">SNIPPIT</h2>
                     <form method="post" action="{{ url_for('index') }}">
                         <input type="button" class="btn btn-primary" value="Start" onclick="openCam()"/>
@@ -83,12 +83,12 @@
                         <input type="button" class="btn btn-success" value="Segment" onclick="upload()"/>
                     </form>
                 </div>
-                <div class="mx-auto col-sm p-2">
+                <div class="mx-auto col-sm p-2 d-flex text-center">
                     <video id="videoInput"></video>
                 </div>
                 <br />
                 <canvas hidden id="canvas" class="d-none"> </canvas>
-                <div class="mx-auto col-sm p-2">
+                <div class="mx-auto col-sm p-2 d-flex text-center">
                     <img id="capture" alt="Snapshot will appear here">
                 </div>
                 <br />
