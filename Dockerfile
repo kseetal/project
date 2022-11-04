@@ -19,6 +19,7 @@ RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN pip3 install Flask
 RUN pip3 install gunicorn
 RUN pip3 install opencv-python
+RUN pip3 install six
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
