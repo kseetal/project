@@ -73,7 +73,7 @@ def captured():
 
     path = Path('fcn_8_resnet50.00005')
     model = fcn_8(51, input_height=480, input_width=640, channels=3)
-    model.load_weights(path)
+    #model.load_weights(path)
 
     input_width = model.input_width
     input_height = model.input_height
