@@ -21,6 +21,7 @@ RUN pip3 install gunicorn
 RUN pip3 install opencv-python
 RUN pip3 install six
 RUN pip3 install tensorflow-cpu
+RUN pip3 install PIL
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
