@@ -11,6 +11,10 @@ import cv2
 
 try:
     os.mkdir('./captures')
+except OSError as error:
+    pass
+
+try:
     os.mkdir('./segments')
 except OSError as error:
     pass
