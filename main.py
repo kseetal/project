@@ -70,6 +70,8 @@ def captured():
             captures.append(filepath)
 
     latest = max(captures, key=os.path.getmtime)
+
+    #load model weights
     path = Path('fcn_8_resnet50.00005')
     model = fcn_8(51, input_height=480, input_width=640, channels=3)
     model.load_weights(path)
