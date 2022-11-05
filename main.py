@@ -8,6 +8,7 @@ from flask import Flask, render_template, request
 from fcn8 import fcn_8
 from PIL import Image
 import cv2
+from keras import backend as K
 
 try:
     os.mkdir('./captures')
@@ -92,6 +93,7 @@ def captured():
                                      prediction_height=output_height)
 
     out = Image.fromarray(seg_img.astype("uint8"))
+    K.clear_session()
     out.save("./segments/output"+format(str(now).replace(":", ''))+".png", "PNG")
     segments = []
     for file in os.listdir(OUT_FOLDER):

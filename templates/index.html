@@ -11,7 +11,58 @@
 <link rel="shortcut icon" href="#"></head>
 <html>
     <body>
-        <script>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm mx-auto d-flex text-center">
+                    <h2 class="mt-5">SNIPPIT</h2>
+                    <form method="post" action="{{ url_for('index') }}">
+                        <input type="button" class="btn btn-primary" value="Start Camera" onclick="openCam()"/>
+                        <input type="button" class="btn btn-info" value="Capture" onclick="takePicture()"/>
+                        <input type="button" class="btn btn-success" value="Segment" onclick="upload()"/>
+                        <input type="file" id="fileUpload" name="fileUpload" accept="image/png, image/jpeg">
+                    </form>
+                </div>
+                <div class="mx-auto col-sm p-2 d-flex text-center">
+                    <video id="videoInput"></video>
+                </div>
+                <br />
+                <canvas hidden id="canvas" class="d-none"> </canvas>
+                <div class="mx-auto col-sm p-2 d-flex text-center">
+                    <img id="capture" alt="Snapshot will appear here">
+                </div>
+                <br />
+            </div>
+        </div>
+    <script>
+            let width = 640;
+            let height = 480;
+
+            window.onload = function() {
+                var input = document.getElementById('fileUpload');
+                var imgInput = document.getElementById('fileUpload');
+                let capture = document.getElementById("capture");
+
+                imgInput.addEventListener('change', function(e) {
+                if(e.target.files[0]) {
+                  let imageFile = e.target.files[0]; //here we get the image file
+                  var reader = new FileReader();
+                  reader.readAsDataURL(imageFile);
+                  reader.onloadend = function (e) {
+                    var myImage = new Image(); // Creates image object
+                    myImage.src = e.target.result; // Assigns converted image to image object
+                    myImage.onload = function(ev) {
+                      var canvas = document.getElementById("canvas"); // Creates a canvas object
+                      var context = canvas.getContext("2d"); // Creates a contect object
+                      canvas.width = width; // Assigns image's width to canvas
+                      canvas.height = height; // Assigns image's height to canvas
+                      context.drawImage(myImage,0,0, width, height); // Draws the image on canvas
+                      const data = canvas.toDataURL("image/png");
+                      capture.setAttribute("src", data);
+                    }
+                  }
+                }
+                });
+            }
             function openCam() {
              let All_mediaDevices=navigator.mediaDevices
              if (!All_mediaDevices || !All_mediaDevices.getUserMedia) {
@@ -20,7 +71,9 @@
              }
              All_mediaDevices.getUserMedia({
                 audio: false,
-                video: true
+                video: {
+                    facingMode: 'environment'
+                }
              })
              .then(function(vidStream) {
                 var video = document.getElementById('videoInput');
@@ -41,14 +94,13 @@
           function takePicture() {
             canvas = document.getElementById("canvas");
             capture = document.getElementById("capture");
-            video = document.getElementById('videoInput');
+            var video = document.getElementById('videoInput');
             const context = canvas.getContext("2d");
-            canvas.setAttribute("width", video.videoWidth);
-            canvas.setAttribute("height", video.videoHeight)
-            context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-
-              const data = canvas.toDataURL("image/png");
-              capture.setAttribute("src", data);
+            canvas.setAttribute("width", width);
+            canvas.setAttribute("height", height)
+            context.drawImage(video, 0, 0, width, height);
+            const data = canvas.toDataURL("image/png");
+            capture.setAttribute("src", data);
           }
 
 
@@ -73,26 +125,5 @@
             });
 		   }
         </script>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm mx-auto d-flex text-center">
-                    <h2 class="mt-5">SNIPPIT</h2>
-                    <form method="post" action="{{ url_for('index') }}">
-                        <input type="button" class="btn btn-primary" value="Start" onclick="openCam()"/>
-                        <input type="button" class="btn btn-info" value="Capture" onclick="takePicture()"/>
-                        <input type="button" class="btn btn-success" value="Segment" onclick="upload()"/>
-                    </form>
-                </div>
-                <div class="mx-auto col-sm p-2 d-flex text-center">
-                    <video id="videoInput"></video>
-                </div>
-                <br />
-                <canvas hidden id="canvas" class="d-none"> </canvas>
-                <div class="mx-auto col-sm p-2 d-flex text-center">
-                    <img id="capture" alt="Snapshot will appear here">
-                </div>
-                <br />
-            </div>
-        </div>
     </body>
 </html>
