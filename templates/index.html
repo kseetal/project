@@ -53,11 +53,17 @@
                     myImage.onload = function(ev) {
                       var canvas = document.getElementById("canvas"); // Creates a canvas object
                       var context = canvas.getContext("2d"); // Creates a contect object
-                      canvas.width = width; // Assigns image's width to canvas
-                      canvas.height = height; // Assigns image's height to canvas
-                      context.drawImage(myImage,0,0, width, height); // Draws the image on canvas
-                      const data = canvas.toDataURL("image/png");
-                      capture.setAttribute("src", data);
+                        canvas.setAttribute("width", width);
+                        canvas.setAttribute("height", height)
+
+                      // centre img on canvas ctx to fit
+                        var scale = Math.min(context.canvas.width / myImage.width, context.canvas.height / myImage.height); // get the min scale to fit
+                        var x = (context.canvas.width - (myImage.width * scale) ) / 2; // centre x
+                        var y = (context.canvas.height - (myImage.height * scale) ) / 2; // centre y
+                        context.drawImage(myImage, x, y,  myImage.width, myImage.height); // draw scaled img onto the canvas.
+
+                        const data = canvas.toDataURL("image/png");
+                        capture.setAttribute("src", data);
                     }
                   }
                 }
