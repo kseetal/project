@@ -19,6 +19,7 @@
                         <input type="button" class="btn btn-primary" value="Start Camera" onclick="openCam()"/>
                         <input type="button" class="btn btn-info" value="Capture" onclick="takePicture()"/>
                         <input type="button" class="btn btn-success" value="Segment" onclick="upload()"/>
+                        <input type="button" class="btn btn-warning" value="Toggle Mask" onclick="toggleMask()"/>
                         <input type="file" id="fileUpload" name="fileUpload" accept="image/png, image/jpeg">
                     </form>
                 </div>
@@ -36,6 +37,7 @@
     <script>
             let width = 640;
             let height = 480;
+            var toggle = 0;
 
             window.onload = function() {
                 var input = document.getElementById('fileUpload');
@@ -60,7 +62,7 @@
                         var scale = Math.min(context.canvas.width / myImage.width, context.canvas.height / myImage.height); // get the min scale to fit
                         var x = (context.canvas.width - (myImage.width * scale) ) / 2; // centre x
                         var y = (context.canvas.height - (myImage.height * scale) ) / 2; // centre y
-                        context.drawImage(myImage, x, y,  myImage.width, myImage.height); // draw scaled img onto the canvas.
+                        context.drawImage(myImage, x, y,  canvas.width, canvas.height); // draw scaled img onto the canvas.
 
                         const data = canvas.toDataURL("image/png");
                         capture.setAttribute("src", data);
@@ -69,6 +71,7 @@
                 }
                 });
             }
+
             function openCam() {
              let All_mediaDevices=navigator.mediaDevices
              if (!All_mediaDevices || !All_mediaDevices.getUserMedia) {
@@ -129,7 +132,33 @@
                     $("#capture").attr('src', data)
                 }
             });
-		   }
+		 }
+
+		 function toggleMask() {
+            if (toggle == 0) {
+                toggle = 1;
+            } else if (toggle == 1) {
+               toggle = 0;
+            }
+
+            formData = new FormData();
+            formData.append('toggle', toggle);
+
+            $.ajax({
+                url: "/mask",
+                type:"POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                error: function(data) {
+                    console.log("upload error", data);
+                    console.log(data.getAllResponseHeaders());
+                },
+                success: function(data){
+                    $("#capture").attr('src', data)
+                }
+            });
+		 }
         </script>
     </body>
 </html>

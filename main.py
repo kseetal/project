@@ -20,11 +20,16 @@ try:
 except OSError as error:
     pass
 
+try:
+    os.mkdir('./masks')
+except OSError as error:
+    pass
 # instantiate flask app
 app = Flask(__name__, template_folder='./templates')
 
 IMG_FOLDER = os.path.abspath("captures")
 OUT_FOLDER = os.path.abspath("segments")
+MASK_FOLDER = os.path.abspath("masks")
 app.config['UPLOAD_FOLDER'] = IMG_FOLDER
 
 
@@ -50,6 +55,16 @@ def index():
         except Exception as e:
             pass
 
+    for filename in os.listdir(MASK_FOLDER):
+        file_path = os.path.join(MASK_FOLDER, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            pass
+
     return render_template('index.html')
 
 
@@ -64,16 +79,17 @@ def captured():
         f.write(imgdata)
 
     captures = []
-    for file in os.listdir(IMG_FOLDER):
+    for imageFile in os.listdir(IMG_FOLDER):
         # check only text files
-        if file.endswith('.png'):
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], file)
+        if imageFile.endswith('.png'):
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], imageFile)
             captures.append(filepath)
 
     latest = max(captures, key=os.path.getmtime)
 
+    inp = cv2.imread(latest, 1)
     path = Path('fcn_8_resnet50.00005')
-    model = fcn_8(51, input_height=480, input_width=640, channels=3)
+    model = fcn_8(51, input_height=inp.shape[0], input_width=inp.shape[1], channels=3)
     #model.load_weights(path)
 
     input_width = model.input_width
@@ -92,9 +108,17 @@ def captured():
                                      prediction_width=output_width,
                                      prediction_height=output_height)
 
+    mask_img = visualize_segmentation(pr, inp, n_classes=n_classes,
+                                     colors=class_colors, overlay_img=False,
+                                     prediction_width=output_width,
+                                     prediction_height=output_height)
+
     out = Image.fromarray(seg_img.astype("uint8"))
+    outMask = Image.fromarray(mask_img.astype("uint8"))
     K.clear_session()
+
     out.save("./segments/output"+format(str(now).replace(":", ''))+".png", "PNG")
+    outMask.save("./masks/mask"+format(str(now).replace(":", ''))+".png", "PNG")
     segments = []
     for file in os.listdir(OUT_FOLDER):
         # check only text files
@@ -106,6 +130,36 @@ def captured():
         img64 = base64.b64encode(img_file.read())
     base64string = 'data:image/png;base64,' + img64.decode('utf-8')
     return base64string
+
+
+@app.route('/mask', methods=['POST'])
+def toggle_mask():
+    segments = []
+    masks = []
+    toggle = request.form["toggle"]
+    if toggle == "1":
+        for file in os.listdir(OUT_FOLDER):
+            # check only text files
+            if file.endswith('.png'):
+                filepath = os.path.join(OUT_FOLDER, file)
+                segments.append(filepath)
+        out_seg = max(segments, key=os.path.getmtime)
+        with open(out_seg, "rb") as img_file:
+            img64 = base64.b64encode(img_file.read())
+        base64string = 'data:image/png;base64,' + img64.decode('utf-8')
+        return base64string
+
+    elif toggle == "0":
+        for file in os.listdir(MASK_FOLDER):
+            # check only text files
+            if file.endswith('.png'):
+                filepath = os.path.join(MASK_FOLDER, file)
+                masks.append(filepath)
+        out_mask = max(masks, key=os.path.getmtime)
+        with open(out_mask, "rb") as img_file:
+            img64 = base64.b64encode(img_file.read())
+        base64string = 'data:image/png;base64,' + img64.decode('utf-8')
+        return base64string
 
 
 if __name__ == '__main__':
