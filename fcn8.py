@@ -1,7 +1,7 @@
 from keras.models import *
 from keras.layers import *
 from types import MethodType
-from models.resnet50 import get_resnet50_encoder, IMAGE_ORDERING
+from project.resnet50 import get_resnet50_encoder, IMAGE_ORDERING
 from models.functions import predict
 
 

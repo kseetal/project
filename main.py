@@ -2,6 +2,7 @@ import base64
 import datetime
 import os, shutil
 import numpy as np
+import tensorflow as tf
 from models.functions import get_image_array, visualize_segmentation, class_colors
 from pathlib import Path
 from flask import Flask, render_template, request
@@ -9,6 +10,7 @@ from fcn8 import fcn_8
 from PIL import Image
 import cv2
 from keras import backend as K
+from models.pspnet import pspnet_101_voc12
 
 try:
     os.mkdir('./captures')
@@ -87,10 +89,14 @@ def captured():
 
     latest = max(captures, key=os.path.getmtime)
 
-    inp = cv2.imread(latest, 1)
+    # inp = cv2.imread(latest, 1)
     path = Path('fcn_8_resnet50.00005')
-    model = fcn_8(51, input_height=inp.shape[0], input_width=inp.shape[1], channels=3)
-    #model.load_weights(path)
+    # model = fcn_8(51, input_height=inp.shape[0], input_width=inp.shape[1], channels=3)
+    model = pspnet_101_voc12()
+    model_url = "https://www.dropbox.com/s/" \
+                "uvqj2cjo4b9c5wg/pspnet101_voc2012.h5?dl=1"
+    latest_weights = tf.keras.utils.get_file("pspnet101_voc2012.h5", model_url)
+    model.load_weights(latest_weights)
 
     input_width = model.input_width
     input_height = model.input_height
