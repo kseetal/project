@@ -18,7 +18,7 @@ RUN apt-get install ffmpeg libsm6 libxext6  -y
 
 RUN pip3 install Flask
 RUN pip3 install gunicorn
-RUN pip3 install opencv-python
+RUN apt-get update && apt-get install -y python-opencv
 RUN pip3 install six
 RUN pip3 install tensorflow-cpu
 RUN pip3 install pillow
