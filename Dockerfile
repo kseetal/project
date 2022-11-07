@@ -13,9 +13,11 @@ WORKDIR $APP_HOME
 
 COPY ./ ./
 
-FROM continuumio/anaconda
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
+
+FROM continuumio/anaconda
+
 
 RUN pip3 install Flask
 RUN pip3 install gunicorn
@@ -23,7 +25,7 @@ RUN pip3 install gunicorn
 RUN conda install opencv
 RUN pip3 install six
 RUN pip3 install tensorflow-cpu
-RUN pip3 install pillow
+RUN pip3 install pillow 
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
