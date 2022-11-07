@@ -1,9 +1,12 @@
 import random
 import os
 import six
-import cv2
 from keras.models import load_model
 import numpy as np
+
+os.system("pip3 install --upgrade pip")
+os.system("pip3 install opencv-python")
+import cv2
 
 DATA_LOADER_SEED = 0
 
