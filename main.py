@@ -7,9 +7,13 @@ from models.functions import get_image_array, visualize_segmentation, class_colo
 from pathlib import Path
 from flask import Flask, render_template, request
 from PIL import Image
-import cv2
 from keras import backend as K
 from models.pspnet import pspnet_101_voc12
+
+os.system("pip install --upgrade pip")
+os.system("pip install opencv-python")
+
+import cv2
 
 try:
     os.mkdir('./captures')

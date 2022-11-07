@@ -26,8 +26,8 @@ RUN pip3 install six
 RUN pip3 install tensorflow-cpu
 RUN pip3 install pillow 
 
-FROM continuumio/anaconda
-RUN conda install opencv
+# FROM continuumio/anaconda
+# RUN conda install opencv
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
