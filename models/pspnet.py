@@ -1,6 +1,6 @@
 import tensorflow as tf
 from math import ceil
-from resnet50 import ResNet
+from .resnet50 import ResNet
 from keras import layers
 from keras.layers import *
 from keras.engine.training import Model
