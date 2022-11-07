@@ -10,8 +10,8 @@ from PIL import Image
 from keras import backend as K
 from models.pspnet import pspnet_101_voc12
 
-os.system("pip install --upgrade pip")
-os.system("pip install opencv-python")
+os.system("pip3 install --upgrade pip")
+os.system("pip3 install opencv-python")
 
 import cv2
 
