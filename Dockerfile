@@ -16,16 +16,18 @@ COPY ./ ./
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 
-FROM continuumio/anaconda
+
 
 
 RUN pip3 install Flask
 RUN pip3 install gunicorn
 #RUN apt-get update && apt-get install -y python-opencv
-RUN conda install opencv
 RUN pip3 install six
 RUN pip3 install tensorflow-cpu
 RUN pip3 install pillow 
+
+FROM continuumio/anaconda
+RUN conda install opencv
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
