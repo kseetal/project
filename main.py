@@ -8,7 +8,7 @@ from pathlib import Path
 from flask import Flask, render_template, request
 from PIL import Image
 from keras import backend as K
-from models.pspnet import pspnet_101_voc12
+from models.fpnresnet50 import fpn_8_resnet50
 
 os.system("pip3 install --upgrade pip")
 os.system("pip3 install opencv-python")
@@ -95,7 +95,7 @@ def captured():
     # inp = cv2.imread(latest, 1)
     path = Path('fcn_8_resnet50.00005')
     # model = fcn_8(51, input_height=inp.shape[0], input_width=inp.shape[1], channels=3)
-    model = pspnet_101_voc12()
+    model = fpn_8_resnet50()
     model_url = "https://www.dropbox.com/s/" \
                 "uvqj2cjo4b9c5wg/pspnet101_voc2012.h5?dl=1"
     latest_weights = tf.keras.utils.get_file("pspnet101_voc2012.h5", model_url)

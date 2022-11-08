@@ -5,7 +5,7 @@ from keras import layers
 from keras.layers import *
 from keras.engine.training import Model
 
-def pspnet_101_voc12():
+def fpn_8_resnet50():
 
     model_config = {
         "input_height": 473,

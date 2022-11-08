@@ -129,8 +129,6 @@ def predict(model=None, inp=None, out_fname=None,
 
     seg_img = visualize_segmentation(pr, inp, n_classes=n_classes,
                                      colors=colors, overlay_img=overlay_img,
-                                     show_legends=show_legends,
-                                     class_names=class_names,
                                      prediction_width=prediction_width,
                                      prediction_height=prediction_height)
 
