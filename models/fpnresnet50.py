@@ -11,10 +11,10 @@ def fpn_8_resnet50():
         "input_height": 473,
         "input_width": 473,
         "n_classes": 21,
-        "model_class": "pspnet_101",
+        "model_class": "fpn_8_resnet50",
     }
 
-    model = pspnet_101(model_config["n_classes"], model_config["input_height"],
+    model = resnet50(model_config["n_classes"], model_config["input_height"],
             model_config["input_width"], 3)
 
 
@@ -98,7 +98,7 @@ def build_pyramid_pooling_module(res, input_shape):
     return res
 
 
-def _build_pspnet(nb_classes, resnet_layers, input_shape,
+def _build_resnet(nb_classes, resnet_layers, input_shape,
                   activation='softmax', channels=3):
 
     inp = Input((input_shape[0], input_shape[1], channels))
@@ -142,11 +142,11 @@ def _build_pspnet(nb_classes, resnet_layers, input_shape,
     return model
 
 
-def pspnet_101(n_classes,  input_height=473, input_width=473, channels=3):
+def resnet50(n_classes,  input_height=473, input_width=473, channels=3):
 
     input_shape = (input_height, input_width)
-    model = _build_pspnet(nb_classes=n_classes,
+    model = _build_resnet(nb_classes=n_classes,
                           resnet_layers=101,
                           input_shape=input_shape, channels=channels)
-    model.model_name = "pspnet_101"
+    model.model_name = "resnet50"
     return model

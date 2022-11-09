@@ -85,21 +85,16 @@ def captured():
 
     captures = []
     for imageFile in os.listdir(IMG_FOLDER):
-        # check only text files
+        # check only image files
         if imageFile.endswith('.png'):
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], imageFile)
             captures.append(filepath)
 
     latest = max(captures, key=os.path.getmtime)
 
-    # inp = cv2.imread(latest, 1)
-    path = Path('fcn_8_resnet50.00005')
-    # model = fcn_8(51, input_height=inp.shape[0], input_width=inp.shape[1], channels=3)
+    path = Path('fcn_8_resnet50.h5')
     model = fpn_8_resnet50()
-    model_url = "https://www.dropbox.com/s/" \
-                "uvqj2cjo4b9c5wg/pspnet101_voc2012.h5?dl=1"
-    latest_weights = tf.keras.utils.get_file("pspnet101_voc2012.h5", model_url)
-    model.load_weights(latest_weights)
+    model.load_weights(path)
 
     input_width = model.input_width
     input_height = model.input_height

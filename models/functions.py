@@ -100,8 +100,7 @@ def visualize_segmentation(seg_arr, inp_img=None, n_classes=None,
 
 
 def predict(model=None, inp=None, out_fname=None,
-            checkpoints_path=None, overlay_img=False,
-            class_names=None, show_legends=False, colors=class_colors,
+            checkpoints_path=None, overlay_img=False, colors=class_colors,
             prediction_width=None, prediction_height=None,
             read_image_type=1):
 
