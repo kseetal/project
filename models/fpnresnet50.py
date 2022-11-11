@@ -79,7 +79,6 @@ def interp_block(prev_layer, level, feature_map_shape, input_shape):
 
 def build_pyramid_pooling_module(res, input_shape):
     """Build the Pyramid Pooling Module."""
-    # ---PSPNet concat layers with Interpolation
     feature_map_size = tuple(int(ceil(input_dim / 8.0))
                              for input_dim in input_shape)
 

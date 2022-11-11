@@ -92,7 +92,7 @@ def captured():
 
     latest = max(captures, key=os.path.getmtime)
 
-    path = Path('fcn_8_resnet50.h5')
+    path = Path("./fcn_8_resnet50.h5")
     model = fpn_8_resnet50()
     model.load_weights(path)
 
