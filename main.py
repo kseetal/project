@@ -92,9 +92,10 @@ def captured():
 
     latest = max(captures, key=os.path.getmtime)
 
-    path = Path("./fcn_8_resnet50.h5")
+    weights_url = "https://www.dropbox.com/s/4uxu308bz7mqdwo/fcn_8_resnet50.h5?dl=1"
+    latest_weights = tf.keras.utils.get_file("fcn_8_resnet50.h5", weights_url)
     model = fpn_8_resnet50()
-    model.load_weights(path)
+    model.load_weights(latest_weights)
 
     input_width = model.input_width
     input_height = model.input_height
