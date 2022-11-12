@@ -13,6 +13,8 @@ from models.fpnresnet50 import fpn_8_resnet50
 os.system("pip3 install --upgrade pip")
 os.system("pip3 install opencv-python")
 
+global latest_weights
+
 import cv2
 
 try:
@@ -36,7 +38,8 @@ IMG_FOLDER = os.path.abspath("captures")
 OUT_FOLDER = os.path.abspath("segments")
 MASK_FOLDER = os.path.abspath("masks")
 app.config['UPLOAD_FOLDER'] = IMG_FOLDER
-
+weights_url = "https://www.dropbox.com/s/4uxu308bz7mqdwo/fcn_8_resnet50.h5?dl=1"
+latest_weights = tf.keras.utils.get_file("fcn_8_resnet50.h5", weights_url)
 
 @app.route('/')
 def index():
@@ -92,8 +95,6 @@ def captured():
 
     latest = max(captures, key=os.path.getmtime)
 
-    weights_url = "https://www.dropbox.com/s/4uxu308bz7mqdwo/fcn_8_resnet50.h5?dl=1"
-    latest_weights = tf.keras.utils.get_file("fcn_8_resnet50.h5", weights_url)
     model = fpn_8_resnet50()
     model.load_weights(latest_weights)
 
